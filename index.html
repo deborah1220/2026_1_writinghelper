@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지속가능한 여행상품 제안하기 수행평가 도우미</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pu:#A855F7;--pu-l:#F5F0FF;--pu-d:#5B21B6;
+  --mt:#10B981;--mt-l:#ECFDF5;--mt-d:#065F46;
+  --am:#F59E0B;--am-l:#FFFBEB;--am-d:#92400E;
+  --ro:#FB7185;--ro-l:#FFF1F3;
+  --sk:#60A5FA;--sk-l:#EFF6FF;--sk-d:#1E40AF;
+  --gd:#FBBF24;--gd-l:#FEF9C3;
+  --bg:#FDFBFF;--card:#fff;--text:#1E1B2E;--mu:#6B7280;
+  --bd:#EDE8FF;--sh:0 4px 20px rgba(168,85,247,0.10);--sh2:0 8px 36px rgba(168,85,247,0.18);
+  --r:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);background-image:radial-gradient(circle,#EDE8FF 1.5px,transparent 1.5px);background-size:26px 26px;}
+/* 복사 방지 — 입력칸 제외 */
+p,div,span,li,h1,h2,h3{user-select:none;-webkit-user-select:none;}
+input,textarea{user-select:text;-webkit-user-select:text;}
+
+/* HERO */
+.hero{background:linear-gradient(145deg,#FBCFE8 0%,#C084FC 35%,#818CF8 65%,#6EE7B7 100%);padding:46px 24px 70px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.12);top:-60px;left:-40px;}
+.hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:52px;background:var(--bg);clip-path:ellipse(52% 100% at 50% 100%);}
+.hb{position:absolute;border-radius:50%;background:rgba(255,255,255,0.14);}
+.hb1{width:60px;height:60px;top:18px;right:70px;}
+.hb2{width:36px;height:36px;bottom:50px;right:130px;}
+.hb3{width:20px;height:20px;top:75px;left:22%;}
+.hero-stars{font-size:20px;letter-spacing:6px;opacity:0.75;margin-bottom:6px;position:relative;animation:fadeUp 0.5s ease;}
+.hero-emoji{font-size:60px;display:block;margin-bottom:10px;animation:bounce 2.5s ease-in-out infinite;position:relative;}
+@keyframes bounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.hero-title-ko{font-family:'Fredoka One',sans-serif;font-size:clamp(34px,6vw,58px);color:#fff;line-height:1.2;margin-bottom:10px;text-shadow:0 2px 14px rgba(0,0,0,0.20);position:relative;}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.26);border:2px solid rgba(255,255,255,0.5);border-radius:50px;padding:6px 20px;font-size:15px;font-weight:800;color:#fff;margin-bottom:10px;position:relative;letter-spacing:0.05em;}
+.hero-en{font-size:15px;font-weight:700;color:rgba(255,255,255,0.88);margin-bottom:3px;position:relative;}
+.hero-ko{font-size:14px;color:rgba(255,255,255,0.7);position:relative;margin-bottom:14px;}
+.hero-tags{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;position:relative;}
+.htag{background:rgba(255,255,255,0.22);border:1.5px solid rgba(255,255,255,0.42);border-radius:50px;padding:5px 13px;font-size:13px;font-weight:800;color:#fff;}
+
+/* TABS */
+.tab-nav{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;padding:24px 18px 6px;max-width:960px;margin:0 auto;}
+.tab-btn{padding:10px 18px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;border:2.5px solid var(--bd);cursor:pointer;transition:all 0.22s;background:var(--card);color:var(--mu);box-shadow:0 2px 10px rgba(168,85,247,0.08);}
+.tab-btn:hover{transform:translateY(-2px);}
+.tab-btn.active{background:linear-gradient(135deg,var(--pu),var(--sk));color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(168,85,247,0.38);}
+
+/* PAGES */
+.page{display:none;max-width:960px;margin:0 auto;padding:16px 18px 56px;animation:fadeUp 0.3s ease;}
+.page.active{display:block;}
+
+/* CARD */
+.sc{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:2px solid var(--bd);padding:24px 24px 20px;margin-bottom:18px;}
+.sc-head{display:flex;align-items:center;gap:11px;margin-bottom:15px;}
+.sc-icon{font-size:28px;}
+.sc-en{font-family:'Fredoka One',sans-serif;font-size:20px;color:var(--text);}
+.sc-ko{font-size:13px;color:var(--mu);font-weight:600;margin-top:1px;}
+
+/* WORD CHIPS */
+.wb-label{font-size:13px;font-weight:900;color:var(--mu);margin-bottom:7px;text-transform:uppercase;letter-spacing:0.07em;}
+.wb-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px;}
+.wc{display:inline-block;padding:6px 14px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.18s;user-select:none;position:relative;}
+.wc:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.09);}
+.wc-m{background:var(--mt-l);color:var(--mt-d);border-color:#A7F3D0;}
+.wc-a{background:var(--am-l);color:var(--am-d);border-color:#FDE68A;}
+.wc-s{background:var(--sk-l);color:var(--sk-d);border-color:#BFDBFE;}
+.wc-r{background:var(--ro-l);color:#9F1239;border-color:#FECDD3;}
+.wc-p{background:var(--pu-l);color:var(--pu-d);border-color:#DDD6FE;}
+.wc-g{background:var(--gd-l);color:#78350F;border-color:#FDE68A;}
+.wc .tip{display:none;position:absolute;bottom:calc(100%+7px);left:50%;transform:translateX(-50%);background:#1E1B2E;color:#fff;font-size:12px;font-weight:700;padding:5px 10px;border-radius:8px;white-space:nowrap;z-index:30;pointer-events:none;}
+.wc.show-tip .tip{display:block;}
+
+/* VOCAB GRID */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:9px;}
+.vc{background:var(--card);border:2px solid var(--bd);border-radius:14px;padding:12px 14px;box-shadow:0 2px 8px rgba(168,85,247,0.07);transition:transform 0.2s,box-shadow 0.2s;}
+.vc:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(168,85,247,0.14);}
+.vc-cat{font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;}
+.vc-cat-g{color:var(--mt-d);}.vc-cat-e{color:var(--am-d);}.vc-cat-c{color:var(--sk-d);}.vc-cat-i{color:var(--pu-d);}
+.vc-en{font-size:15px;font-weight:800;color:var(--pu-d);margin-bottom:2px;}
+.vc-ko{font-size:14px;color:var(--text);font-weight:700;margin-bottom:2px;}
+.vc-ex{font-size:12px;color:var(--mu);font-weight:600;font-style:italic;line-height:1.4;}
+
+/* SENTENCE STRUCT */
+.struct{background:linear-gradient(135deg,#F5F0FF,#F0FDF4);border:2px solid #DDD6FE;border-radius:16px;padding:17px 19px;margin-bottom:12px;font-size:16px;font-weight:700;color:var(--text);line-height:1.9;}
+.struct .f{color:var(--pu);font-style:italic;font-weight:800;}
+.struct .opt{color:var(--mt-d);font-weight:800;}
+.struct .ko{display:block;font-size:13px;color:var(--mu);font-weight:600;margin-top:3px;}
+
+.ex-btn{display:inline-flex;align-items:center;gap:6px;background:#FFF8E0;border:2px dashed #FCD34D;border-radius:50px;padding:7px 16px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:#92400E;cursor:pointer;transition:all 0.2s;margin-bottom:9px;}
+.ex-btn:hover{background:#FEF3C7;transform:scale(1.02);}
+.ex-box{display:none;background:#FFFBEB;border:2px solid #FDE68A;border-radius:14px;padding:15px 17px;margin-bottom:13px;}
+.ex-box.open{display:block;animation:fadeUp 0.2s ease;}
+.ex-item{margin-bottom:13px;padding-bottom:13px;border-bottom:1px dashed #FDE68A;}
+.ex-item:last-child{margin:0;padding:0;border:none;}
+.ex-en{font-size:15px;font-weight:800;color:var(--text);line-height:1.65;}
+.ex-inc{color:#D97706;}
+.ex-ko{font-size:13px;color:var(--mu);font-weight:600;margin-top:3px;line-height:1.55;}
+
+.htip{background:var(--am-l);border:2px solid #FDE68A;border-radius:12px;padding:11px 15px;font-size:14px;font-weight:700;color:#78350F;display:flex;gap:9px;align-items:flex-start;margin-top:9px;}
+.htip .hi{font-size:19px;flex-shrink:0;}
+
+/* BUILDER */
+.builder-intro{background:linear-gradient(135deg,#F5F0FF,#F0FDF4);border:2px solid #DDD6FE;border-radius:var(--r);padding:20px 22px;margin-bottom:18px;box-shadow:var(--sh);}
+.builder-intro p{font-size:17px;font-weight:800;color:var(--pu-d);margin-bottom:5px;}
+.builder-intro span{font-size:14px;color:var(--mu);font-weight:600;line-height:1.7;}
+
+.b-sec{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:2px solid var(--bd);padding:22px 22px 18px;margin-bottom:16px;}
+.b-badge-row{display:flex;align-items:center;gap:9px;margin-bottom:13px;}
+.b-badge{font-size:12px;font-weight:800;padding:4px 13px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;}
+.bi{background:#EDE9FE;color:var(--pu-d);}.bt{background:#D1FAE5;color:var(--mt-d);}
+.bp{background:#FEF3C7;color:var(--am-d);}.bp2{background:#FEF9C3;color:#78350F;}.bc{background:#FCE7F3;color:#9D174D;}
+
+.prev-box{background:linear-gradient(135deg,#F5F0FF,#F0FDF4);border:2px solid #DDD6FE;border-radius:14px;padding:16px 19px;font-size:16px;font-weight:700;color:var(--text);line-height:2.1;min-height:66px;margin-bottom:10px;word-break:break-word;}
+.prev-box .ph{color:#C4B5FD;font-style:italic;}
+.prev-box .filled{color:var(--pu);font-weight:800;}
+.ko-p{display:block;font-size:13px;font-weight:600;color:var(--mu);line-height:1.5;margin-top:-4px;margin-bottom:3px;}
+
+.b-input{width:100%;border:2.5px solid var(--bd);border-radius:12px;padding:10px 13px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--text);background:#fff;transition:border-color 0.2s;margin-bottom:8px;}
+.b-input:focus{outline:none;border-color:var(--pu);box-shadow:0 0 0 3px rgba(168,85,247,0.15);}
+.b-input::placeholder{color:#C4B5FD;font-style:italic;}
+.gold-in{border-color:#FDE68A !important;}
+.gold-in:focus{border-color:var(--gd) !important;box-shadow:0 0 0 3px rgba(251,191,36,0.18) !important;}
+.input-row{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:8px;}
+.input-row .b-input{flex:1;min-width:150px;margin-bottom:0;}
+
+.opt-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px;}
+.oc{padding:7px 15px;border-radius:50px;font-size:14px;font-weight:700;border:2.5px solid transparent;cursor:pointer;transition:all 0.18s;}
+.oc-m{background:var(--mt-l);color:var(--mt-d);border-color:#A7F3D0;}
+.oc-s{background:var(--sk-l);color:var(--sk-d);border-color:#BFDBFE;}
+.oc-a{background:var(--am-l);color:var(--am-d);border-color:#FDE68A;}
+.oc-r{background:var(--ro-l);color:#9F1239;border-color:#FECDD3;}
+.oc-g{background:var(--gd-l);color:#78350F;border-color:#FDE68A;}
+.oc.sel{transform:scale(1.05);}
+.oc-m.sel{border-color:var(--mt);box-shadow:0 0 0 3px rgba(16,185,129,0.20);}
+.oc-s.sel{border-color:var(--sk);box-shadow:0 0 0 3px rgba(96,165,250,0.22);}
+.oc-g.sel{border-color:var(--gd);box-shadow:0 0 0 3px rgba(251,191,36,0.22);}
+.oc-r.sel{border-color:var(--ro);box-shadow:0 0 0 3px rgba(251,113,133,0.22);}
+
+.sub-lbl{font-size:13px;font-weight:800;color:var(--mu);margin:9px 0 6px;}
+.sub-lbl-g{color:#D97706;}
+
+.gen-btn{display:block;width:100%;padding:15px;background:linear-gradient(135deg,var(--pu),#818CF8,var(--mt));background-size:200%;color:#fff;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 6px 20px rgba(168,85,247,0.32);transition:all 0.2s;margin-top:14px;animation:shimmer 3s ease infinite;}
+@keyframes shimmer{0%{background-position:0%}50%{background-position:100%}100%{background-position:0%}}
+.gen-btn:hover{transform:scale(1.02);box-shadow:0 10px 28px rgba(168,85,247,0.42);}
+
+.out-box{background:#fff;border:2.5px solid #DDD6FE;border-radius:var(--r);padding:26px 26px 22px;margin-top:6px;box-shadow:var(--sh2);display:none;}
+.out-box.show{display:block;animation:fadeUp 0.4s ease;}
+.out-title{font-family:'Fredoka One',sans-serif;font-size:21px;color:var(--pu-d);margin-bottom:16px;text-align:center;}
+.out-row{margin-bottom:14px;}
+.out-lbl{font-size:12px;font-weight:900;color:var(--mu);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;}
+.out-txt{font-size:16px;font-weight:700;color:var(--text);line-height:1.8;background:var(--pu-l);border-radius:12px;padding:11px 15px;border-left:4px solid var(--pu);}
+.out-inc{display:inline-block;color:#D97706;background:#FEF9C3;border-radius:6px;padding:1px 7px;margin-top:3px;}
+
+/* CHECKLIST */
+.chk-intro{background:var(--card);border:2px solid var(--bd);border-radius:var(--r);padding:19px 21px;margin-bottom:16px;box-shadow:var(--sh);font-size:16px;font-weight:700;line-height:1.7;}
+.chk-intro .ko{font-size:13px;color:var(--mu);font-weight:600;display:block;margin-top:4px;}
+.pw{text-align:center;padding:18px 0 8px;}
+.rl{font-family:'Fredoka One',sans-serif;font-size:21px;color:var(--mt);margin-top:7px;}
+.rs{font-size:13px;color:var(--mu);font-weight:600;margin-top:2px;}
+.chk-list{display:flex;flex-direction:column;gap:9px;}
+.ci{background:var(--card);border:2.5px solid var(--bd);border-radius:16px;padding:15px 17px;display:flex;align-items:flex-start;gap:11px;box-shadow:0 2px 8px rgba(168,85,247,0.07);cursor:pointer;transition:all 0.2s;user-select:none;}
+.ci:hover{transform:translateX(4px);}
+.ci.ck{border-color:var(--mt);background:var(--mt-l);}
+.ci-box{width:25px;height:25px;border-radius:7px;border:2.5px solid var(--bd);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;margin-top:1px;}
+.ci.ck .ci-box{background:var(--mt);border-color:var(--mt);}
+.ci-en{font-size:15px;font-weight:800;color:var(--text);line-height:1.4;}
+.ci-ko{font-size:12px;color:var(--mu);font-weight:600;margin-top:2px;}
+
+/* FOOTER */
+.footer{background:linear-gradient(135deg,#4C1D95,#3730A3);padding:28px 24px;text-align:center;}
+.footer p{color:rgba(255,255,255,0.85);font-size:17px;font-weight:700;line-height:1.8;max-width:560px;margin:0 auto 5px;}
+.footer .ko{font-size:14px;color:rgba(255,255,255,0.55);font-weight:600;}
+.tc{background:#100820;text-align:center;padding:17px;}
+.tc p{color:rgba(255,255,255,0.35);font-size:14px;margin:0 0 2px;}
+.tc .tn{color:rgba(255,255,255,0.65);font-size:15px;font-weight:800;}
+
+@media(max-width:560px){
+  .vocab-grid{grid-template-columns:1fr 1fr;}
+  .sc,.b-sec{padding:17px 14px 15px;}
+  .input-row{flex-direction:column;}
+  .input-row .b-input{min-width:unset;}
+}
+
+/* TRANSLATOR */
+.qc{background:var(--pu-l);color:var(--pu-d);border:2px solid #DDD6FE;border-radius:50px;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s;user-select:none;-webkit-user-select:none;}
+.qc:hover{transform:translateY(-2px);background:#EDE9FE;box-shadow:0 4px 12px rgba(168,85,247,0.18);}
+.qc.qc-active{background:var(--pu);color:#fff;border-color:var(--pu);}
+.tr-lang-badge{display:inline-block;background:#EDE9FE;color:var(--pu-d);border-radius:8px 8px 0 0;padding:5px 14px;font-size:13px;font-weight:800;}
+.tr-input{width:100%;border:2.5px solid #DDD6FE;border-radius:0 14px 14px 14px;padding:14px 16px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:var(--text);background:#fff;resize:none;line-height:1.6;user-select:text !important;-webkit-user-select:text !important;}
+.tr-input:focus{outline:none;border-color:var(--pu);box-shadow:0 0 0 3px rgba(168,85,247,0.15);}
+.tr-input::placeholder{color:#C4B5FD;font-style:italic;font-weight:600;}
+.tr-char-count{text-align:right;font-size:12px;font-weight:700;color:var(--mu);margin-top:4px;}
+.tr-char-count.warn{color:var(--ro);}
+.tr-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pu),#818CF8);color:#fff;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 5px 18px rgba(168,85,247,0.30);transition:all 0.2s;margin-bottom:14px;}
+.tr-btn:hover:not(:disabled){transform:scale(1.02);}
+.tr-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.tr-loading{display:none;text-align:center;padding:16px 0 10px;}
+.tr-loading.show{display:block;}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pu);animation:db 1.2s ease-in-out infinite;}
+.dot:nth-child(2){animation-delay:0.2s;}.dot:nth-child(3){animation-delay:0.4s;}
+@keyframes db{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+.tr-error{display:none;background:var(--ro-l);border:2px solid #FECDD3;border-radius:12px;padding:12px 16px;font-size:14px;font-weight:700;color:#9F1239;margin-bottom:10px;}
+.tr-error.show{display:block;}
+.tr-result{display:none;background:linear-gradient(135deg,#F5F0FF,#F0FDF4);border:2px solid #DDD6FE;border-radius:16px;padding:18px 20px;margin-bottom:10px;animation:fadeUp 0.3s ease;}
+.tr-result.show{display:block;}
+.tr-res-en{font-size:22px;font-weight:900;color:var(--pu-d);line-height:1.5;margin-bottom:8px;user-select:none !important;-webkit-user-select:none !important;}
+.tr-res-tip{font-size:13px;color:var(--mu);font-weight:600;line-height:1.6;}
+.tr-hist-item{border-bottom:1px dashed var(--bd);padding:10px 0;}
+.tr-hist-item:last-child{border-bottom:none;}
+.tr-hist-ko{font-size:13px;font-weight:700;color:var(--mu);}
+.tr-hist-en{font-size:15px;font-weight:800;color:var(--pu-d);margin-top:2px;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hb hb1"></div><div class="hb hb2"></div><div class="hb hb3"></div>
+  <div class="hero-stars">🌸 ✨ 🌿 ✨ 🌸</div>
+  <span class="hero-emoji">🗺️</span>
+  <div class="hero-title-ko">지속가능한 여행상품<br>제안하기</div>
+  <div class="hero-badge">✨ 수행평가 도우미 ✨</div>
+  <p class="hero-en">Sustainable Travel Proposal — Korea 1-Day Tour 🇰🇷</p>
+  <p class="hero-ko">한국 국내 1일 코스 친환경 여행상품 영작을 도와드려요 💜</p>
+</div>
+
+<!-- TABS -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="gp('p1')">📖 Word Bank<br><small>단어 모음</small></button>
+  <button class="tab-btn" onclick="gp('p2')">🔧 Sentence Guide<br><small>문장 구조</small></button>
+  <button class="tab-btn" onclick="gp('p3')">✍️ 제안서 만들기<br><small>Build My Proposal</small></button>
+  <button class="tab-btn" onclick="gp('p4')">✅ Self Check<br><small>셀프 체크</small></button>
+  <button class="tab-btn" onclick="gp('p5')">🌐 번역기<br><small>Mini Translator</small></button>
+</div>
+
+<!-- ═══ PAGE 1 WORD BANK ═══ -->
+<div class="page active" id="p1">
+
+  <div class="sc">
+    <div class="sc-head"><span class="sc-icon">👆</span>
+      <div><div class="sc-en">단어를 눌러보세요! 한국어 뜻이 나와요 😊</div>
+           <div class="sc-ko">Tap a word chip to see its Korean meaning!</div></div>
+    </div>
+
+    <p class="wb-label">🌿 환경 (Environment) — 활동 단어</p>
+    <div class="wb-chips">
+      <span class="wc wc-m" onclick="tp(this)">pick up trash<span class="tip">쓰레기 줍기</span></span>
+      <span class="wc wc-m" onclick="tp(this)">go plogging<span class="tip">플로깅 (뛰면서 쓰레기 줍기)</span></span>
+      <span class="wc wc-m" onclick="tp(this)">use reusable bottles<span class="tip">다회용 텀블러 사용하기</span></span>
+      <span class="wc wc-m" onclick="tp(this)">ride bicycles<span class="tip">자전거 타기</span></span>
+      <span class="wc wc-m" onclick="tp(this)">take public transport<span class="tip">대중교통 이용하기</span></span>
+      <span class="wc wc-m" onclick="tp(this)">plant trees<span class="tip">나무 심기</span></span>
+      <span class="wc wc-m" onclick="tp(this)">avoid single-use plastics<span class="tip">일회용 플라스틱 피하기</span></span>
+      <span class="wc wc-m" onclick="tp(this)">walk along nature trails<span class="tip">자연 산책로 걷기</span></span>
+    </div>
+
+    <p class="wb-label">💰 지역경제 (Local Economy) — 활동 단어</p>
+    <div class="wb-chips">
+      <span class="wc wc-a" onclick="tp(this)">eat at local restaurants<span class="tip">현지 식당에서 식사하기</span></span>
+      <span class="wc wc-a" onclick="tp(this)">buy handmade souvenirs<span class="tip">수공예 기념품 구매하기</span></span>
+      <span class="wc wc-a" onclick="tp(this)">hire local guides<span class="tip">현지 가이드 고용하기</span></span>
+      <span class="wc wc-a" onclick="tp(this)">visit local markets<span class="tip">현지 시장 방문하기</span></span>
+      <span class="wc wc-a" onclick="tp(this)">stay at local guesthouses<span class="tip">현지 게스트하우스 이용하기</span></span>
+      <span class="wc wc-a" onclick="tp(this)">try local street food<span class="tip">현지 길거리 음식 먹기</span></span>
+      <span class="wc wc-a" onclick="tp(this)">shop at traditional markets<span class="tip">전통 시장에서 쇼핑하기</span></span>
+    </div>
+
+    <p class="wb-label">🤝 지역사회 (Local Community) — 활동 단어</p>
+    <div class="wb-chips">
+      <span class="wc wc-s" onclick="tp(this)">join a cooking class<span class="tip">요리 수업 참여하기</span></span>
+      <span class="wc wc-s" onclick="tp(this)">learn local greetings<span class="tip">현지 인사말 배우기</span></span>
+      <span class="wc wc-s" onclick="tp(this)">visit a cultural village<span class="tip">문화 마을 방문하기</span></span>
+      <span class="wc wc-s" onclick="tp(this)">join a local workshop<span class="tip">현지 워크숍 참여하기</span></span>
+      <span class="wc wc-s" onclick="tp(this)">respect local customs<span class="tip">현지 관습 존중하기</span></span>
+      <span class="wc wc-s" onclick="tp(this)">try a traditional craft<span class="tip">전통 공예 체험하기</span></span>
+      <span class="wc wc-s" onclick="tp(this)">watch a traditional performance<span class="tip">전통 공연 관람하기</span></span>
+    </div>
+
+    <p class="wb-label">💡 이유 단어 — "because ___" 뒤에 써요</p>
+    <div class="wb-chips">
+      <span class="wc wc-m" onclick="tp(this)">it reduces pollution<span class="tip">오염을 줄이기 때문에</span></span>
+      <span class="wc wc-m" onclick="tp(this)">it protects nature<span class="tip">자연을 보호하기 때문에</span></span>
+      <span class="wc wc-m" onclick="tp(this)">it lowers CO₂ emissions<span class="tip">이산화탄소 배출을 줄이기 때문에</span></span>
+      <span class="wc wc-a" onclick="tp(this)">it supports local businesses<span class="tip">지역 사업체를 지원하기 때문에</span></span>
+      <span class="wc wc-a" onclick="tp(this)">money stays in the community<span class="tip">돈이 지역 사회에 남기 때문에</span></span>
+      <span class="wc wc-a" onclick="tp(this)">it creates local jobs<span class="tip">지역 일자리를 만들기 때문에</span></span>
+      <span class="wc wc-s" onclick="tp(this)">it respects local culture<span class="tip">현지 문화를 존중하기 때문에</span></span>
+      <span class="wc wc-s" onclick="tp(this)">local people feel valued<span class="tip">지역 주민이 존중받는다고 느끼기 때문에</span></span>
+      <span class="wc wc-s" onclick="tp(this)">it preserves tradition<span class="tip">전통을 보존하기 때문에</span></span>
+    </div>
+
+    <p class="wb-label">🎁 유인책 단어 — "If you ___, you will receive ___"</p>
+    <div class="wb-chips">
+      <span class="wc wc-g" onclick="tp(this)">If you ___<span class="tip">만약 ~을 하면 (조건)</span></span>
+      <span class="wc wc-g" onclick="tp(this)">you will receive<span class="tip">당신은 받을 것입니다</span></span>
+      <span class="wc wc-g" onclick="tp(this)">a free coffee coupon<span class="tip">무료 커피 쿠폰</span></span>
+      <span class="wc wc-g" onclick="tp(this)">a discount coupon<span class="tip">할인 쿠폰</span></span>
+      <span class="wc wc-g" onclick="tp(this)">a free local snack box<span class="tip">무료 현지 간식 박스</span></span>
+      <span class="wc wc-g" onclick="tp(this)">a special eco-badge<span class="tip">특별 친환경 배지</span></span>
+      <span class="wc wc-g" onclick="tp(this)">a free souvenir<span class="tip">무료 기념품</span></span>
+      <span class="wc wc-g" onclick="tp(this)">10% off your next tour<span class="tip">다음 투어 10% 할인</span></span>
+      <span class="wc wc-g" onclick="tp(this)">bring your own bottle<span class="tip">개인 텀블러를 가져오면</span></span>
+      <span class="wc wc-g" onclick="tp(this)">join the plogging tour<span class="tip">플로깅 투어에 참여하면</span></span>
+      <span class="wc wc-g" onclick="tp(this)">spend over ₩10,000<span class="tip">1만원 이상 구매하면</span></span>
+      <span class="wc wc-g" onclick="tp(this)">complete the activity<span class="tip">활동을 완료하면</span></span>
+    </div>
+
+    <p class="wb-label">🌟 혜택 단어 — "tourists can ___" 뒤에 써요</p>
+    <div class="wb-chips">
+      <span class="wc wc-r" onclick="tp(this)">experience local culture<span class="tip">현지 문화를 경험하다</span></span>
+      <span class="wc wc-r" onclick="tp(this)">learn about sustainability<span class="tip">지속가능성에 대해 배우다</span></span>
+      <span class="wc wc-r" onclick="tp(this)">enjoy nature safely<span class="tip">안전하게 자연을 즐기다</span></span>
+      <span class="wc wc-r" onclick="tp(this)">make unforgettable memories<span class="tip">잊지 못할 추억을 만들다</span></span>
+      <span class="wc wc-r" onclick="tp(this)">connect with local people<span class="tip">현지 주민과 교류하다</span></span>
+      <span class="wc wc-r" onclick="tp(this)">feel proud of their choices<span class="tip">자신의 선택에 자부심을 느끼다</span></span>
+    </div>
+  </div>
+
+  <!-- VOCAB DICT -->
+  <div class="sc">
+    <div class="sc-head"><span class="sc-icon">📚</span>
+      <div><div class="sc-en">핵심 단어 사전 Key Vocabulary</div>
+           <div class="sc-ko">제안서를 쓸 때 꼭 필요한 단어들이에요!</div></div>
+    </div>
+    <div class="vocab-grid">
+      <!-- 제안 관련 -->
+      <div class="vc"><div class="vc-cat vc-cat-i">📝 제안</div><div class="vc-en">propose</div><div class="vc-ko">제안하다</div><div class="vc-ex">I want to propose a tour.</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-i">📝 제안</div><div class="vc-en">package</div><div class="vc-ko">패키지 (묶음 상품)</div><div class="vc-ex">a travel package</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-i">📝 제안</div><div class="vc-en">one-day tour</div><div class="vc-ko">1일 코스 여행</div><div class="vc-ex">a one-day tour in Korea</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-i">📝 제안</div><div class="vc-en">visit</div><div class="vc-ko">방문하다</div><div class="vc-ex">This trip visits two places.</div></div>
+      <!-- 지속가능 -->
+      <div class="vc"><div class="vc-cat vc-cat-g">🌿 환경</div><div class="vc-en">sustainable</div><div class="vc-ko">지속가능한</div><div class="vc-ex">sustainable travel</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-g">🌿 환경</div><div class="vc-en">eco-friendly</div><div class="vc-ko">친환경적인</div><div class="vc-ex">eco-friendly choices</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-g">🌿 환경</div><div class="vc-en">pollution</div><div class="vc-ko">오염</div><div class="vc-ex">reduce pollution</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-g">🌿 환경</div><div class="vc-en">emission</div><div class="vc-ko">배출 (가스 등)</div><div class="vc-ex">CO₂ emissions</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-g">🌿 환경</div><div class="vc-en">reusable</div><div class="vc-ko">재사용 가능한</div><div class="vc-ex">reusable bottle</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-g">🌿 환경</div><div class="vc-en">plogging</div><div class="vc-ko">플로깅 (달리며 쓰레기 줍기)</div><div class="vc-ex">go plogging</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-g">🌿 환경</div><div class="vc-en">protect</div><div class="vc-ko">보호하다</div><div class="vc-ex">protect nature</div></div>
+      <!-- 지역경제 -->
+      <div class="vc"><div class="vc-cat vc-cat-e">💰 경제</div><div class="vc-en">local</div><div class="vc-ko">현지의, 지역의</div><div class="vc-ex">local restaurants</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-e">💰 경제</div><div class="vc-en">souvenir</div><div class="vc-ko">기념품</div><div class="vc-ex">buy souvenirs</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-e">💰 경제</div><div class="vc-en">handmade</div><div class="vc-ko">수공예, 손으로 만든</div><div class="vc-ex">handmade products</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-e">💰 경제</div><div class="vc-en">traditional market</div><div class="vc-ko">전통 시장</div><div class="vc-ex">Gwangjang Market</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-e">💰 경제</div><div class="vc-en">support</div><div class="vc-ko">지원하다, 돕다</div><div class="vc-ex">support local businesses</div></div>
+      <!-- 지역사회 -->
+      <div class="vc"><div class="vc-cat vc-cat-c">🤝 사회</div><div class="vc-en">community</div><div class="vc-ko">지역 사회, 공동체</div><div class="vc-ex">local community</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-c">🤝 사회</div><div class="vc-en">culture</div><div class="vc-ko">문화</div><div class="vc-ex">local culture</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-c">🤝 사회</div><div class="vc-en">tradition</div><div class="vc-ko">전통</div><div class="vc-ex">Korean tradition</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-c">🤝 사회</div><div class="vc-en">respect</div><div class="vc-ko">존중하다</div><div class="vc-ex">respect local customs</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-c">🤝 사회</div><div class="vc-en">benefit</div><div class="vc-ko">혜택을 받다 / 이점</div><div class="vc-ex">communities can benefit</div></div>
+      <!-- 유인책 -->
+      <div class="vc"><div class="vc-cat vc-cat-i">🎁 유인책</div><div class="vc-en">incentive</div><div class="vc-ko">유인책, 동기 부여</div><div class="vc-ex">a special incentive</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-i">🎁 유인책</div><div class="vc-en">receive</div><div class="vc-ko">받다</div><div class="vc-ex">you will receive a gift</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-i">🎁 유인책</div><div class="vc-en">coupon</div><div class="vc-ko">쿠폰</div><div class="vc-ex">a free coupon</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-i">🎁 유인책</div><div class="vc-en">discount</div><div class="vc-ko">할인</div><div class="vc-ex">10% discount</div></div>
+      <!-- 마무리 -->
+      <div class="vc"><div class="vc-cat vc-cat-i">📝 마무리</div><div class="vc-en">through</div><div class="vc-ko">~을 통해</div><div class="vc-ex">through this trip</div></div>
+      <div class="vc"><div class="vc-cat vc-cat-i">📝 마무리</div><div class="vc-en">unforgettable</div><div class="vc-ko">잊지 못할</div><div class="vc-ex">unforgettable memories</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 2 SENTENCE GUIDE ═══ -->
+<div class="page" id="p2">
+  <div class="sc">
+    <div class="sc-head"><span class="sc-icon">🚀</span>
+      <div><div class="sc-en">도입 Introduction</div><div class="sc-ko">제안서의 첫 두 문장!</div></div>
+    </div>
+    <div class="struct">
+      I want to propose a one-day travel package called "<span class="f">나의 패키지 이름</span>".<br>
+      <span class="ko" style="margin-left:0;margin-bottom:4px;display:block;">→ 저는 "[패키지 이름]"이라는 1일 여행 패키지를 제안하고 싶습니다.</span>
+      This trip visits two places: [<span class="f">첫 번째 장소</span>] and [<span class="f">두 번째 장소</span>].
+      <span class="ko">→ 이 여행은 두 곳을 방문합니다: [장소1]과 [장소2].</span>
+    </div>
+    <button class="ex-btn" onclick="tx('x0')">💛 예시 보기</button>
+    <div class="ex-box" id="x0">
+      <div class="ex-item">
+        <p class="ex-en">I want to propose a one-day travel package called <u>"Green Jeonju Day"</u>.<br>This trip visits two places: [Jeonju Hanok Village] and [Jeonju Traditional Market].</p>
+        <p class="ex-ko">저는 "Green Jeonju Day"라는 1일 패키지를 제안합니다. 전주 한옥마을과 전주 전통시장을 방문합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sc-head"><span class="sc-icon">🎯</span>
+      <div><div class="sc-en">추천 대상 Target</div><div class="sc-ko">누구를 위한 여행인지!</div></div>
+    </div>
+    <div class="struct">
+      This package is for people who want to [<span class="opt">enjoy nature / feel relaxed / experience local culture / travel responsibly</span>].<br>
+      <span class="ko">→ 이 패키지는 [자연을 즐기고 싶은 / 편안하고 싶은 / 현지 문화를 경험하고 싶은 / 책임감 있게 여행하고 싶은] 분들을 위한 것입니다.<br>✏️ 괄호 안에서 하나만 골라 쓰세요!</span>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sc-head"><span class="sc-icon">🗺️</span>
+      <div><div class="sc-en">장소 1 &amp; 2 — 활동 + 이유 + 🎁 유인책</div>
+           <div class="sc-ko">세 문장으로 구성돼요!</div></div>
+    </div>
+    <div class="struct">
+      In [<span class="f">여행 장소 이름</span>], we will <span class="f">할 활동</span>.<br>
+      <span class="ko" style="margin-left:0;margin-bottom:4px;display:block;">→ [장소]에서, 우리는 [활동]을 할 것입니다.</span>
+      This helps [<span class="opt">the environment / local people</span>] because <span class="f">도움이 되는 이유</span>.<br>
+      <span class="ko" style="margin-left:0;margin-bottom:4px;display:block;">→ 이것은 [환경 / 지역 주민]에 도움이 됩니다. 왜냐하면 [이유]이기 때문입니다.</span>
+      🎁 If you <span class="f">이 조건을 하면</span>, you will receive <span class="f">이 보상</span>!<br>
+      <span class="ko" style="margin-left:0;display:block;">→ 만약 [조건]을 하면, [보상]을 받을 수 있어요! (유인책 문장)</span>
+    </div>
+    <button class="ex-btn" onclick="tx('x1')">💛 예시 보기 (3가지)</button>
+    <div class="ex-box" id="x1">
+      <div class="ex-item">
+        <p class="ex-en">🌿 In <u>Bukhansan National Park</u>, we will <u>go plogging along the trail</u>.<br>
+        This helps <u>the environment</u> because <u>it reduces pollution</u>.<br>
+        <span class="ex-inc">🎁 If you join the plogging tour, you will receive a free local snack box!</span></p>
+        <p class="ex-ko">북한산 국립공원에서 등산로 플로깅을 할 것입니다. 환경에 도움이 됩니다. 오염을 줄이기 때문입니다.<br>🎁 플로깅 투어에 참여하면, 무료 현지 간식 박스를 받을 수 있어요!</p>
+      </div>
+      <div class="ex-item">
+        <p class="ex-en">💰 In <u>Insadong</u>, we will <u>buy handmade souvenirs from local artists</u>.<br>
+        This helps <u>local people</u> because <u>money stays in the community</u>.<br>
+        <span class="ex-inc">🎁 If you spend over ₩10,000 at local shops, you will receive a 10% discount coupon!</span></p>
+        <p class="ex-ko">인사동에서 현지 예술가의 수공예 기념품을 살 것입니다. 지역 주민에게 도움이 됩니다. 돈이 지역에 남기 때문입니다.<br>🎁 현지 가게에서 1만원 이상 구매하면, 10% 할인 쿠폰을 받을 수 있어요!</p>
+      </div>
+      <div class="ex-item">
+        <p class="ex-en">🤝 In <u>Andong Hahoe Village</u>, we will <u>join a traditional mask-making workshop</u>.<br>
+        This helps <u>local people</u> because <u>it preserves tradition</u>.<br>
+        <span class="ex-inc">🎁 If you bring your own bottle, you will receive a free coffee coupon at the local café!</span></p>
+        <p class="ex-ko">안동 하회마을에서 전통 탈 만들기 워크숍에 참여할 것입니다. 지역 주민에게 도움이 됩니다. 전통을 보존하기 때문입니다.<br>🎁 개인 텀블러를 가져오면, 현지 카페 무료 커피 쿠폰을 받을 수 있어요!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sc-head"><span class="sc-icon">🏁</span>
+      <div><div class="sc-en">마무리 Closing</div><div class="sc-ko">마지막 두 문장!</div></div>
+    </div>
+    <div class="struct">
+      Through this trip, tourists can <span class="f">여행자가 얻을 수 있는 혜택</span>.<br>
+      <span class="ko" style="margin-left:0;margin-bottom:4px;display:block;">→ 이 여행을 통해 여행자들은 [혜택]을 얻을 수 있습니다.</span>
+      Also, local communities can benefit because <span class="f">지역 사회에 도움이 되는 이유</span>.
+      <span class="ko">→ 또한 지역 사회도 혜택을 받을 수 있습니다. 왜냐하면 [이유]이기 때문입니다.</span>
+    </div>
+    <button class="ex-btn" onclick="tx('x2')">💛 예시 보기</button>
+    <div class="ex-box" id="x2">
+      <div class="ex-item">
+        <p class="ex-en">Through this trip, tourists can <u>experience Korean culture and make unforgettable memories</u>.<br>Also, local communities can benefit because <u>money stays in the community and local jobs are created</u>.</p>
+        <p class="ex-ko">이 여행을 통해 여행자들은 한국 문화를 경험하고 잊지 못할 추억을 만들 수 있습니다. 또한 지역 사회도 혜택을 받을 수 있습니다. 왜냐하면 돈이 지역에 남고 일자리가 만들어지기 때문입니다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 3 BUILDER ═══ -->
+<div class="page" id="p3">
+  <div class="builder-intro">
+    <p>✍️ 빈칸을 채우면 문장이 자동으로 완성돼요!</p>
+    <span>버튼을 클릭하거나 직접 입력하세요. 🎁 유인책 문장은 세 번째 줄에 들어가요!<br>📍 한국 국내 1일 코스 기준으로 장소를 골라보세요 🇰🇷</span>
+  </div>
+
+  <!-- INTRO -->
+  <div class="b-sec">
+    <div class="b-badge-row"><span class="b-badge bi">도입 Introduction</span></div>
+    <div class="prev-box" id="pv-intro">
+      I want to propose a one-day travel package called "<span class="ph" id="ph-nm">나의 패키지 이름</span>".<br>
+      <span class="ko-p">→ 저는 "<span id="kph-nm">나의 패키지 이름</span>"이라는 1일 여행 패키지를 제안하고 싶습니다.</span>
+      This trip visits two places: [<span class="ph" id="ph-p1">첫 번째 장소</span>] and [<span class="ph" id="ph-p2">두 번째 장소</span>].
+      <span class="ko-p">→ 이 여행은 두 곳을 방문합니다.</span>
+    </div>
+    <div class="input-row">
+      <input class="b-input" id="in-nm" placeholder="패키지 이름 (예: Green Jeonju Day)" oninput="up()">
+      <input class="b-input" id="in-p1" placeholder="장소 1 (예: Jeonju Hanok Village)" oninput="up()">
+      <input class="b-input" id="in-p2" placeholder="장소 2 (예: Insadong)" oninput="up()">
+    </div>
+    <div class="htip"><span class="hi">💡</span><span>이름 아이디어: <b>Green + 도시</b> / <b>Eco + 활동</b> / <b>Local + 도시 + Day</b></span></div>
+  </div>
+
+  <!-- TARGET -->
+  <div class="b-sec">
+    <div class="b-badge-row"><span class="b-badge bt">추천 대상 Target</span></div>
+    <div class="prev-box" id="pv-tg">
+      This package is for people who want to <span class="ph" id="ph-tg">아래에서 선택하거나 직접 입력</span>.
+      <span class="ko-p">→ 이 패키지는 [<span id="kph-tg">선택한 내용</span>]하고 싶은 분들을 위한 것입니다.</span>
+    </div>
+    <div class="opt-chips" id="ch-tg">
+      <span class="oc oc-m" onclick="so(this,'ch-tg','in-tg')">enjoy nature</span>
+      <span class="oc oc-m" onclick="so(this,'ch-tg','in-tg')">feel relaxed</span>
+      <span class="oc oc-s" onclick="so(this,'ch-tg','in-tg')">experience local culture</span>
+      <span class="oc oc-s" onclick="so(this,'ch-tg','in-tg')">travel responsibly</span>
+      <span class="oc oc-a" onclick="so(this,'ch-tg','in-tg')">learn about sustainability</span>
+    </div>
+    <input class="b-input" id="in-tg" placeholder="또는 직접 입력" oninput="up()">
+  </div>
+
+  <!-- PLACE 1 -->
+  <div class="b-sec">
+    <div class="b-badge-row"><span class="b-badge bp">장소 1 Place 1</span></div>
+    <div class="prev-box" id="pv-pl1">
+      In [<span class="ph" id="ph-pn1">장소 이름</span>], we will <span class="ph" id="ph-ac1">할 활동</span>.<br>
+      <span class="ko-p">→ [<span id="kph-pn1">장소</span>]에서, 우리는 [<span id="kph-ac1">활동</span>]을 할 것입니다.</span>
+      This helps [<span class="ph" id="ph-wh1">환경 / 지역 주민</span>] because <span class="ph" id="ph-wy1">도움이 되는 이유</span>.<br>
+      <span class="ko-p">→ 이것은 [환경/지역 주민]에 도움이 됩니다. 왜냐하면 [이유]이기 때문입니다.</span>
+      🎁 If you <span class="ph" id="ph-cd1">이 조건을 하면</span>, you will receive <span class="ph" id="ph-rw1">이 보상</span>!<br>
+      <span class="ko-p">→ 만약 [<span id="kph-cd1">조건</span>]을 하면, [<span id="kph-rw1">보상</span>]을 받을 수 있어요!</span>
+    </div>
+
+    <input class="b-input" id="in-ac1" placeholder="할 활동 (예: go plogging along the trail)" oninput="up()">
+    <p class="sub-lbl">👇 This helps ___ — 무엇에 도움이 되나요?</p>
+    <div class="opt-chips" id="ch-wh1">
+      <span class="oc oc-m" onclick="so(this,'ch-wh1','in-wh1')">the environment 환경</span>
+      <span class="oc oc-s" onclick="so(this,'ch-wh1','in-wh1')">local people 지역 주민</span>
+    </div>
+    <input class="b-input" id="in-wh1" placeholder="the environment 또는 local people" oninput="up()">
+    <input class="b-input" id="in-wy1" placeholder="도움이 되는 이유 (예: it reduces pollution)" oninput="up()">
+    <p class="sub-lbl sub-lbl-g">🎁 유인책 — 조건: 만약 무엇을 하면?</p>
+    <div class="opt-chips" id="ch-cd1">
+      <span class="oc oc-g" onclick="so(this,'ch-cd1','in-cd1')">join the plogging tour</span>
+      <span class="oc oc-g" onclick="so(this,'ch-cd1','in-cd1')">bring your own bottle</span>
+      <span class="oc oc-g" onclick="so(this,'ch-cd1','in-cd1')">complete the activity</span>
+      <span class="oc oc-g" onclick="so(this,'ch-cd1','in-cd1')">spend over ₩10,000</span>
+    </div>
+    <input class="b-input gold-in" id="in-cd1" placeholder="또는 직접 입력 (조건)" oninput="up()">
+    <p class="sub-lbl sub-lbl-g">🎁 유인책 — 보상: 무엇을 받을 수 있나요?</p>
+    <div class="opt-chips" id="ch-rw1">
+      <span class="oc oc-g" onclick="so(this,'ch-rw1','in-rw1')">a free coffee coupon</span>
+      <span class="oc oc-g" onclick="so(this,'ch-rw1','in-rw1')">a free local snack box</span>
+      <span class="oc oc-g" onclick="so(this,'ch-rw1','in-rw1')">a special eco-badge</span>
+      <span class="oc oc-g" onclick="so(this,'ch-rw1','in-rw1')">a free souvenir</span>
+      <span class="oc oc-g" onclick="so(this,'ch-rw1','in-rw1')">10% off your next tour</span>
+    </div>
+    <input class="b-input gold-in" id="in-rw1" placeholder="또는 직접 입력 (보상)" oninput="up()">
+  </div>
+
+  <!-- PLACE 2 -->
+  <div class="b-sec">
+    <div class="b-badge-row"><span class="b-badge bp2">장소 2 Place 2</span></div>
+    <div class="prev-box" id="pv-pl2">
+      In [<span class="ph" id="ph-pn2">장소 이름</span>], we will <span class="ph" id="ph-ac2">할 활동</span>.<br>
+      <span class="ko-p">→ [<span id="kph-pn2">장소</span>]에서, 우리는 [<span id="kph-ac2">활동</span>]을 할 것입니다.</span>
+      This helps [<span class="ph" id="ph-wh2">환경 / 지역 주민</span>] because <span class="ph" id="ph-wy2">도움이 되는 이유</span>.<br>
+      <span class="ko-p">→ 이것은 [환경/지역 주민]에 도움이 됩니다. 왜냐하면 [이유]이기 때문입니다.</span>
+      🎁 If you <span class="ph" id="ph-cd2">이 조건을 하면</span>, you will receive <span class="ph" id="ph-rw2">이 보상</span>!<br>
+      <span class="ko-p">→ 만약 [<span id="kph-cd2">조건</span>]을 하면, [<span id="kph-rw2">보상</span>]을 받을 수 있어요!</span>
+    </div>
+
+    <input class="b-input" id="in-ac2" placeholder="할 활동 (예: buy handmade souvenirs)" oninput="up()">
+    <p class="sub-lbl">👇 This helps ___ — 무엇에 도움이 되나요?</p>
+    <div class="opt-chips" id="ch-wh2">
+      <span class="oc oc-m" onclick="so(this,'ch-wh2','in-wh2')">the environment 환경</span>
+      <span class="oc oc-s" onclick="so(this,'ch-wh2','in-wh2')">local people 지역 주민</span>
+    </div>
+    <input class="b-input" id="in-wh2" placeholder="the environment 또는 local people" oninput="up()">
+    <input class="b-input" id="in-wy2" placeholder="도움이 되는 이유 (예: money stays in the community)" oninput="up()">
+    <p class="sub-lbl sub-lbl-g">🎁 유인책 — 조건: 만약 무엇을 하면?</p>
+    <div class="opt-chips" id="ch-cd2">
+      <span class="oc oc-g" onclick="so(this,'ch-cd2','in-cd2')">join the plogging tour</span>
+      <span class="oc oc-g" onclick="so(this,'ch-cd2','in-cd2')">bring your own bottle</span>
+      <span class="oc oc-g" onclick="so(this,'ch-cd2','in-cd2')">complete the activity</span>
+      <span class="oc oc-g" onclick="so(this,'ch-cd2','in-cd2')">spend over ₩10,000</span>
+    </div>
+    <input class="b-input gold-in" id="in-cd2" placeholder="또는 직접 입력 (조건)" oninput="up()">
+    <p class="sub-lbl sub-lbl-g">🎁 유인책 — 보상: 무엇을 받을 수 있나요?</p>
+    <div class="opt-chips" id="ch-rw2">
+      <span class="oc oc-g" onclick="so(this,'ch-rw2','in-rw2')">a free coffee coupon</span>
+      <span class="oc oc-g" onclick="so(this,'ch-rw2','in-rw2')">a free local snack box</span>
+      <span class="oc oc-g" onclick="so(this,'ch-rw2','in-rw2')">a special eco-badge</span>
+      <span class="oc oc-g" onclick="so(this,'ch-rw2','in-rw2')">a free souvenir</span>
+      <span class="oc oc-g" onclick="so(this,'ch-rw2','in-rw2')">10% off your next tour</span>
+    </div>
+    <input class="b-input gold-in" id="in-rw2" placeholder="또는 직접 입력 (보상)" oninput="up()">
+  </div>
+
+  <!-- CLOSING -->
+  <div class="b-sec">
+    <div class="b-badge-row"><span class="b-badge bc">마무리 Closing</span></div>
+    <div class="prev-box" id="pv-cl">
+      Through this trip, tourists can <span class="ph" id="ph-bn">여행자가 얻을 혜택</span>.<br>
+      <span class="ko-p">→ 이 여행을 통해 여행자들은 [혜택]을 얻을 수 있습니다.</span>
+      Also, local communities can benefit because <span class="ph" id="ph-cm">지역 사회에 도움이 되는 이유</span>.
+      <span class="ko-p">→ 또한 지역 사회도 혜택을 받을 수 있습니다. 왜냐하면 [이유]이기 때문입니다.</span>
+    </div>
+    <div class="opt-chips" id="ch-bn">
+      <span class="oc oc-r" onclick="so(this,'ch-bn','in-bn')">experience local culture</span>
+      <span class="oc oc-r" onclick="so(this,'ch-bn','in-bn')">make unforgettable memories</span>
+      <span class="oc oc-r" onclick="so(this,'ch-bn','in-bn')">enjoy nature safely</span>
+      <span class="oc oc-r" onclick="so(this,'ch-bn','in-bn')">learn about sustainability</span>
+      <span class="oc oc-r" onclick="so(this,'ch-bn','in-bn')">connect with local people</span>
+    </div>
+    <input class="b-input" id="in-bn" placeholder="또는 직접 입력 (여행자 혜택)" oninput="up()" style="margin-bottom:8px;">
+    <input class="b-input" id="in-cm" placeholder="지역사회 이유 (예: money stays in the community)" oninput="up()">
+  </div>
+
+  <button class="gen-btn" onclick="gen()">🎉 내 제안서 완성 문장 보기!</button>
+
+  <div class="out-box" id="out-box">
+    <div class="out-title">✈️ 나의 지속가능한 여행 제안서</div>
+    <div class="out-row"><div class="out-lbl">도입 Introduction</div><div class="out-txt" id="o-intro"></div></div>
+    <div class="out-row"><div class="out-lbl">추천 대상 Target</div><div class="out-txt" id="o-tg"></div></div>
+    <div class="out-row"><div class="out-lbl">장소 1 Place 1</div><div class="out-txt" id="o-pl1"></div></div>
+    <div class="out-row"><div class="out-lbl">장소 2 Place 2</div><div class="out-txt" id="o-pl2"></div></div>
+    <div class="out-row"><div class="out-lbl">마무리 Closing</div><div class="out-txt" id="o-cl"></div></div>
+    <div class="htip" style="margin-top:4px;"><span class="hi">📝</span><span>이 문장을 <b>참고해서</b> 활동지에 직접 써보세요! 그대로 베끼지 말고 내 말로 바꿔 쓰는 연습을 해요 😊</span></div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 4 SELF CHECK ═══ -->
+<div class="page" id="p4">
+  <div class="chk-intro">
+    ✅ 제출 전에 체크해봐요!
+    <span class="ko">Before you hand in — check every item below!</span>
+  </div>
+  <div class="pw">
+    <svg width="94" height="94" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#EDE8FF" stroke-width="10"/>
+      <circle id="rc" cx="50" cy="50" r="40" fill="none" stroke="#10B981" stroke-width="10"
+        stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round"
+        transform="rotate(-90 50 50)" style="transition:stroke-dashoffset 0.5s ease"/>
+      <text x="50" y="56" text-anchor="middle" font-size="22" font-weight="900"
+        font-family="Nunito,sans-serif" fill="#10B981" id="rt">0%</text>
+    </svg>
+    <div class="rl" id="rl">Let's check! 🌱</div>
+    <div class="rs" id="rs">하나씩 눌러서 체크해봐요!</div>
+  </div>
+  <div class="chk-list">
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I wrote a package name in the introduction.</div><div class="ci-ko">도입에 패키지 이름을 썼어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I wrote two place names (Korean destinations!).</div><div class="ci-ko">두 개의 국내 여행지 이름을 썼어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I chose a target group for the trip.</div><div class="ci-ko">추천 대상을 골랐어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I wrote "we will ___" for Place 1.</div><div class="ci-ko">장소 1에서 "we will ___" 활동을 썼어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I wrote "because ___" for Place 1.</div><div class="ci-ko">장소 1에서 "because ___" 이유를 썼어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">🎁 I wrote an incentive sentence for Place 1: "If you ___, you will receive ___".</div><div class="ci-ko">장소 1에서 유인책 문장을 썼어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I wrote "we will ___" for Place 2.</div><div class="ci-ko">장소 2에서 "we will ___" 활동을 썼어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I wrote "because ___" for Place 2.</div><div class="ci-ko">장소 2에서 "because ___" 이유를 썼어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">🎁 I wrote an incentive sentence for Place 2: "If you ___, you will receive ___".</div><div class="ci-ko">장소 2에서 유인책 문장을 썼어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I completed "tourists can ___" in the closing.</div><div class="ci-ko">마무리에서 "tourists can ___"를 완성했어요.</div></div></div>
+    <div class="ci" onclick="ck(this)"><div class="ci-box">✓</div><div><div class="ci-en">I checked spelling and capital letters.</div><div class="ci-ko">철자와 대문자를 확인했어요.</div></div></div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 5 TRANSLATOR ═══ -->
+<div class="page" id="p5">
+
+  <div class="sc" style="background:linear-gradient(135deg,#F5F0FF,#F0FDF4);border-color:#DDD6FE;">
+    <div class="sc-head"><span class="sc-icon">🌐</span>
+      <div>
+        <div class="sc-en">여행 표현 미니 번역기</div>
+        <div class="sc-ko">한국어 단어나 짧은 표현을 여행 제안서에 맞는 영어로 번역해드려요! ✨</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc" style="border-color:#FDE68A;background:#FFFBEB;">
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:22px;flex-shrink:0;">💡</span>
+      <div>
+        <div style="font-size:15px;font-weight:800;color:#92400E;margin-bottom:4px;">이런 표현을 번역해드려요!</div>
+        <div style="font-size:14px;color:#78350F;font-weight:600;line-height:1.8;">
+          · 여행 활동 단어 (예: <b>전통 시장에서 쇼핑하다</b>)<br>
+          · 이유 표현 (예: <b>탄소 배출을 줄이기 때문에</b>)<br>
+          · 유인책 문장 (예: <b>무료 커피 쿠폰을 드립니다</b>)<br>
+          · 여행지 설명 (예: <b>한옥마을의 전통 공예 체험</b>)
+        </div>
+        <div style="font-size:13px;color:#A16207;margin-top:8px;font-weight:700;background:#FEF3C7;border-radius:8px;padding:7px 12px;display:inline-block;">
+          📝 번역 결과를 <b>보고 직접 타이핑</b>해서 활동지에 써야 해요!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK CHIPS -->
+  <div class="sc">
+    <div class="sc-head"><span class="sc-icon">⚡</span>
+      <div><div class="sc-en">자주 쓰는 표현 — 눌러서 바로 번역!</div>
+           <div class="sc-ko">Quick phrases — tap to translate instantly</div></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;">
+      <button class="qc" onclick="quickTr(this)">전통 시장 방문하기</button>
+      <button class="qc" onclick="quickTr(this)">현지 음식 먹기</button>
+      <button class="qc" onclick="quickTr(this)">자전거로 이동하기</button>
+      <button class="qc" onclick="quickTr(this)">수공예 기념품 구매하기</button>
+      <button class="qc" onclick="quickTr(this)">환경을 보호하다</button>
+      <button class="qc" onclick="quickTr(this)">지역 일자리를 만들다</button>
+      <button class="qc" onclick="quickTr(this)">문화를 존중하다</button>
+      <button class="qc" onclick="quickTr(this)">오염을 줄이다</button>
+      <button class="qc" onclick="quickTr(this)">무료 쿠폰을 받다</button>
+      <button class="qc" onclick="quickTr(this)">탄소 배출을 줄이다</button>
+      <button class="qc" onclick="quickTr(this)">잊지 못할 추억을 만들다</button>
+      <button class="qc" onclick="quickTr(this)">지역 주민에게 도움이 되다</button>
+    </div>
+  </div>
+
+  <!-- MAIN TRANSLATOR -->
+  <div class="sc">
+    <div class="sc-head"><span class="sc-icon">✏️</span>
+      <div><div class="sc-en">직접 입력해서 번역하기</div>
+           <div class="sc-ko">단어나 짧은 표현을 한국어로 입력하세요! (80자 이내)</div></div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <div class="tr-lang-badge">🇰🇷 한국어 입력</div>
+      <textarea class="tr-input" id="trInput" placeholder="예: 해변에서 쓰레기를 줍다&#10;예: 돈이 지역 사회에 남기 때문에&#10;예: 개인 텀블러를 가져오면" rows="3" oninput="trChg()"></textarea>
+      <div class="tr-char-count" id="trCnt">0 / 80자</div>
+    </div>
+
+    <button class="tr-btn" id="trBtn" onclick="doTr()">
+      <span id="trBtnTxt">🌐 영어로 번역하기</span>
+    </button>
+
+    <div class="tr-loading" id="trLoad">
+      <div style="display:flex;justify-content:center;gap:7px;margin-bottom:8px;">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--mu);">번역 중이에요... ✨</div>
+    </div>
+
+    <div class="tr-error" id="trErr"></div>
+
+    <div class="tr-result" id="trRes">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:15px;font-weight:800;color:var(--pu-d);">🇬🇧 영어 번역 결과</span>
+        <span style="background:var(--ro);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;">NEW</span>
+      </div>
+      <div class="tr-res-en" id="trResEn"></div>
+      <div class="tr-res-tip" id="trResTip"></div>
+      <div style="background:#FEF9C3;border:1.5px solid #FDE68A;border-radius:10px;padding:8px 13px;font-size:13px;font-weight:800;color:#78350F;margin-top:10px;">
+        📝 이 결과를 보고 활동지에 직접 타이핑해서 써요!
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="sc" id="trHistBox" style="display:none;">
+    <div class="sc-head"><span class="sc-icon">📋</span>
+      <div><div class="sc-en">번역 기록</div>
+           <div class="sc-ko">이번 수업 시간 번역 기록이에요 (새로고침하면 사라져요)</div></div>
+    </div>
+    <div id="trHistList"></div>
+    <button onclick="clearHist()" style="margin-top:12px;background:none;border:2px solid #FECDD3;border-radius:50px;padding:6px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#9F1239;cursor:pointer;user-select:none;">🗑️ 기록 지우기</button>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>🇰🇷 <strong>Good luck with your Travel Proposal! 화이팅! 💜</strong></p>
+  <p class="ko">한국의 아름다운 여행지를 알리는 지속가능한 여행상품을 만들어봐요!</p>
+</div>
+<div class="tc">
+  <p>신일비즈니스고등학교</p>
+  <p class="tn">영어과 최재연T</p>
+</div>
+
+<script>
+// TAB
+function gp(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn')[{p1:0,p2:1,p3:2,p4:3,p5:4}[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+// WORD CHIP TOOLTIP
+function tp(el){
+  const was=el.classList.contains('show-tip');
+  document.querySelectorAll('.wc.show-tip').forEach(c=>c.classList.remove('show-tip'));
+  if(!was) el.classList.add('show-tip');
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.wc')) document.querySelectorAll('.wc.show-tip').forEach(c=>c.classList.remove('show-tip'));});
+// EXAMPLE TOGGLE
+function tx(id){
+  const b=document.getElementById(id);
+  b.classList.toggle('open');
+  b.previousElementSibling.textContent=b.classList.contains('open')?'🙈 예시 숨기기':'💛 예시 보기';
+}
+// OPTION SELECT
+function so(chip,gid,iid){
+  document.querySelectorAll('#'+gid+' .oc').forEach(c=>c.classList.remove('sel'));
+  chip.classList.add('sel');
+  document.getElementById(iid).value=chip.textContent.trim().split(' ')[0]==='the'?chip.textContent.trim():chip.textContent.trim();
+  // clean up "환경" "지역 주민" suffix
+  const v=chip.textContent.trim().replace(/ 환경$/,'').replace(/ 지역 주민$/,'');
+  document.getElementById(iid).value=v;
+  up();
+}
+// SET SPAN
+function ss(id,val,ph){
+  const el=document.getElementById(id);
+  if(!el)return;
+  if(val){el.textContent=val;el.className='filled';}
+  else{el.textContent=ph;el.className='ph';}
+}
+function sk(id,val){const el=document.getElementById(id);if(el)el.textContent=val||'';}
+function gv(id){return document.getElementById(id).value.trim();}
+// LIVE PREVIEW UPDATE
+function up(){
+  const p1=gv('in-p1'),p2=gv('in-p2'),nm=gv('in-nm');
+  const tg=gv('in-tg');
+  const ac1=gv('in-ac1'),wh1=gv('in-wh1'),wy1=gv('in-wy1'),cd1=gv('in-cd1'),rw1=gv('in-rw1');
+  const ac2=gv('in-ac2'),wh2=gv('in-wh2'),wy2=gv('in-wy2'),cd2=gv('in-cd2'),rw2=gv('in-rw2');
+  ss('ph-nm',nm,'나의 패키지 이름'); sk('kph-nm',nm||'나의 패키지 이름');
+  ss('ph-p1',p1,'첫 번째 장소'); ss('ph-p2',p2,'두 번째 장소');
+  ss('ph-tg',tg,'아래에서 선택하거나 직접 입력'); sk('kph-tg',tg||'선택한 내용');
+  ss('ph-pn1',p1,'장소 이름'); ss('ph-ac1',ac1,'할 활동');
+  ss('ph-wh1',wh1,'환경 / 지역 주민'); ss('ph-wy1',wy1,'도움이 되는 이유');
+  ss('ph-cd1',cd1,'이 조건을 하면'); ss('ph-rw1',rw1,'이 보상');
+  sk('kph-pn1',p1||'장소'); sk('kph-ac1',ac1||'활동');
+  sk('kph-cd1',cd1||'조건'); sk('kph-rw1',rw1||'보상');
+  ss('ph-pn2',p2,'장소 이름'); ss('ph-ac2',ac2,'할 활동');
+  ss('ph-wh2',wh2,'환경 / 지역 주민'); ss('ph-wy2',wy2,'도움이 되는 이유');
+  ss('ph-cd2',cd2,'이 조건을 하면'); ss('ph-rw2',rw2,'이 보상');
+  sk('kph-pn2',p2||'장소'); sk('kph-ac2',ac2||'활동');
+  sk('kph-cd2',cd2||'조건'); sk('kph-rw2',rw2||'보상');
+  ss('ph-bn',gv('in-bn'),'여행자가 얻을 혜택');
+  ss('ph-cm',gv('in-cm'),'지역 사회에 도움이 되는 이유');
+}
+// GENERATE
+function gen(){
+  const v=id=>gv(id)||'___';
+  const p1=gv('in-p1')||'Place 1', p2=gv('in-p2')||'Place 2';
+  document.getElementById('o-intro').innerHTML=
+    `I want to propose a one-day travel package called "<b>${v('in-nm')}</b>".<br>This trip visits two places: [${p1}] and [${p2}].`;
+  document.getElementById('o-tg').innerHTML=
+    `This package is for people who want to <b>${v('in-tg')}</b>.`;
+  document.getElementById('o-pl1').innerHTML=
+    `In [${p1}], we will <b>${v('in-ac1')}</b>.<br>`+
+    `This helps [<b>${v('in-wh1')}</b>] because <b>${v('in-wy1')}</b>.<br>`+
+    `<span class="out-inc">🎁 If you <b>${v('in-cd1')}</b>, you will receive <b>${v('in-rw1')}</b>!</span>`;
+  document.getElementById('o-pl2').innerHTML=
+    `In [${p2}], we will <b>${v('in-ac2')}</b>.<br>`+
+    `This helps [<b>${v('in-wh2')}</b>] because <b>${v('in-wy2')}</b>.<br>`+
+    `<span class="out-inc">🎁 If you <b>${v('in-cd2')}</b>, you will receive <b>${v('in-rw2')}</b>!</span>`;
+  document.getElementById('o-cl').innerHTML=
+    `Through this trip, tourists can <b>${v('in-bn')}</b>.<br>`+
+    `Also, local communities can benefit because <b>${v('in-cm')}</b>.`;
+  const ob=document.getElementById('out-box');
+  ob.classList.add('show');
+  setTimeout(()=>ob.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+// ── TRANSLATOR ──
+const trHistory = [];
+const MAX_CHARS = 80;
+
+function trChg(){
+  const val = document.getElementById('trInput').value;
+  const cnt = document.getElementById('trCnt');
+  cnt.textContent = val.length + ' / ' + MAX_CHARS + '자';
+  cnt.className = 'tr-char-count' + (val.length > MAX_CHARS ? ' warn' : '');
+}
+
+function quickTr(btn){
+  document.querySelectorAll('.qc').forEach(b=>b.classList.remove('qc-active'));
+  btn.classList.add('qc-active');
+  document.getElementById('trInput').value = btn.textContent;
+  trChg();
+  doTr();
+}
+
+async function doTr(){
+  const input = document.getElementById('trInput').value.trim();
+  if(!input){ showTrErr('번역할 내용을 입력해주세요! 😊'); return; }
+  if(input.length > MAX_CHARS){ showTrErr('80자 이내로 입력해주세요!'); return; }
+
+  // UI state
+  document.getElementById('trBtn').disabled = true;
+  document.getElementById('trBtnTxt').textContent = '번역 중...';
+  document.getElementById('trLoad').className = 'tr-loading show';
+  document.getElementById('trRes').className = 'tr-result';
+  document.getElementById('trErr').className = 'tr-error';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        system: `You are a travel English translator for Korean high school students doing a sustainable travel proposal assignment. 
+Translate Korean words or short phrases into natural English suitable for a travel proposal.
+Always respond in this exact JSON format (no markdown, no extra text):
+{"en":"English translation here","tip":"One short Korean explanation of the English expression (15 words max)"}
+Keep translations simple and appropriate for B1-level English learners.
+Focus on travel, sustainability, environment, local economy, and community vocabulary.`,
+        messages: [{ role: 'user', content: '번역해줘: ' + input }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content[0].text;
+    const parsed = JSON.parse(raw);
+
+    document.getElementById('trResEn').textContent = parsed.en;
+    document.getElementById('trResTip').textContent = '💬 ' + parsed.tip;
+    document.getElementById('trRes').className = 'tr-result show';
+
+    // add to history
+    trHistory.unshift({ ko: input, en: parsed.en });
+    renderHist();
+
+  } catch(e) {
+    showTrErr('번역에 실패했어요. 잠시 후 다시 시도해봐요! 😅');
+  } finally {
+    document.getElementById('trLoad').className = 'tr-loading';
+    document.getElementById('trBtn').disabled = false;
+    document.getElementById('trBtnTxt').textContent = '🌐 영어로 번역하기';
+  }
+}
+
+function showTrErr(msg){
+  const el = document.getElementById('trErr');
+  el.textContent = '⚠️ ' + msg;
+  el.className = 'tr-error show';
+  document.getElementById('trLoad').className = 'tr-loading';
+  document.getElementById('trBtn').disabled = false;
+  document.getElementById('trBtnTxt').textContent = '🌐 영어로 번역하기';
+}
+
+function renderHist(){
+  if(trHistory.length === 0){ document.getElementById('trHistBox').style.display='none'; return; }
+  document.getElementById('trHistBox').style.display='block';
+  document.getElementById('trHistList').innerHTML = trHistory.slice(0,10).map(h=>
+    `<div class="tr-hist-item"><div class="tr-hist-ko">🇰🇷 ${h.ko}</div><div class="tr-hist-en">🇬🇧 ${h.en}</div></div>`
+  ).join('');
+}
+
+function clearHist(){
+  trHistory.length = 0;
+  renderHist();
+}
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('cut', e => e.preventDefault());
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && ['c','x','a','v'].includes(e.key.toLowerCase())) {
+    if (e.key.toLowerCase() !== 'v') e.preventDefault(); // v(붙여넣기)는 입력칸에서 허용
+  }
+});
+// 드래그 선택 후 복사 방지
+document.querySelectorAll('.prev-box, .struct, .ex-en, .vc, .wc').forEach(el => {
+  el.style.userSelect = 'none';
+  el.style.webkitUserSelect = 'none';
+});
+// 동적으로 생성되는 요소도 포함하도록 MutationObserver 사용
+const obs = new MutationObserver(() => {
+  document.querySelectorAll('.prev-box, .out-txt').forEach(el => {
+    el.style.userSelect = 'none';
+    el.style.webkitUserSelect = 'none';
+  });
+});
+obs.observe(document.body, { childList: true, subtree: true });
+
+const TOT=11;
+function ck(el){
+  el.classList.toggle('ck');
+  const n=document.querySelectorAll('.ci.ck').length;
+  const p=Math.round(n/TOT*100);
+  document.getElementById('rc').style.strokeDashoffset=251.2-(251.2*p/100);
+  document.getElementById('rt').textContent=p+'%';
+  let l,s;
+  if(p===100){l='Perfect! 🏆';s='완벽해요! 제출 준비 완료! 🎉';
+    document.getElementById('rc').setAttribute('stroke','#FBBF24');
+    document.getElementById('rt').setAttribute('fill','#FBBF24');}
+  else if(p>=70){l='Almost there! 🌟';s='거의 다 됐어요!';}
+  else if(p>=40){l='Good progress! 🌱';s='잘 하고 있어요!';}
+  else{l='Keep going! 💜';s='하나씩 체크해봐요!';}
+  document.getElementById('rl').textContent=l;
+  document.getElementById('rs').textContent=s;
+}
+</script>
+</body>
+</html>
